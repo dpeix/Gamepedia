@@ -1,0 +1,141 @@
+{# filepath: c:\Users\Dylan\Documents\Dev\Projets\Gamepedia\templates\home\index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des entités{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <h1 class="mb-4">Liste des Jeux</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RAWG ID</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Date de sortie</th>
+                <th>Image</th>
+                <th>Note</th>
+                <th>Genres</th>
+                <th>Plateformes</th>
+                <th>Développeurs</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for game in games %}
+            <tr>
+                <td>{{ game.id }}</td>
+                <td>{{ game.rawgID }}</td>
+                <td>{{ game.name }}</td>
+                <td>{{ game.description }}</td>
+                <td>{{ game.released ? game.released|date('Y-m-d') : '' }}</td>
+                <td>
+                    {% if game.backgroundImage %}
+                        <img src="{{ game.backgroundImage }}" alt="bg" style="width:60px;">
+                    {% endif %}
+                </td>
+                <td>{{ game.rating }}</td>
+                <td>
+                    {% for genre in game.genres %}
+                        <span class="badge bg-primary">{{ genre.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for platform in game.platforms %}
+                        <span class="badge bg-secondary">{{ platform.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for dev in game.developers %}
+                        <span class="badge bg-info text-dark">{{ dev.name }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Genres</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RAWG ID</th>
+                <th>Nom</th>
+                <th>Jeux</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for genre in genres %}
+            <tr>
+                <td>{{ genre.id }}</td>
+                <td>{{ genre.rawgId }}</td>
+                <td>{{ genre.name }}</td>
+                <td>
+                    {% for game in genre.games %}
+                        <span class="badge bg-primary">{{ game.name }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Plateformes</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RAWG ID</th>
+                <th>Nom</th>
+                <th>Jeux</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for platform in platforms %}
+            <tr>
+                <td>{{ platform.id }}</td>
+                <td>{{ platform.rawgId }}</td>
+                <td>{{ platform.name }}</td>
+                <td>
+                    {% for game in platform.games %}
+                        <span class="badge bg-secondary">{{ game.name }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Développeurs</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RAWG ID</th>
+                <th>Nom</th>
+                <th>Jeux</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dev in developers %}
+            <tr>
+                <td>{{ dev.id }}</td>
+                <td>{{ dev.rawgId }}</td>
+                <td>{{ dev.name }}</td>
+                <td>
+                    {% for game in dev.games %}
+                        <span class="badge bg-info text-dark">{{ game.name }}</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

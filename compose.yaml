@@ -44,6 +44,8 @@ services:
       # You should definitely change the password in production
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-g1dxmD4N6EfdU4vWwzUX}
       POSTGRES_USER: ${POSTGRES_USER:-user}
+    ports:
+      - "5432:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-gamepediadb}", "-U", "${POSTGRES_USER:-user}"]
       timeout: 5s
