@@ -25,6 +25,12 @@ class ImportGameCommand extends Command
         parent::__construct();
     }
 
+    protected function configure(): void
+    {
+        $this
+            ->setDescription('Importe les jeux depuis une source externe');
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         ini_set('memory_limit', '512M'); // ou plus si besoin
@@ -32,6 +38,7 @@ class ImportGameCommand extends Command
 
         $page = 1;
         $importedCount = 0;
+        $maxPages = 10;
 
         do {
             $gamesData = $this->rawgApiService->fetchGames($page);
@@ -120,7 +127,7 @@ class ImportGameCommand extends Command
             $this->em->clear(); // Ajoutez ceci pour libérer la mémoire Doctrine
             $output->writeln("Page $page importée.");
             $page++;
-        } while (!empty($results));
+        } while (!empty($results) && $page <= $maxPages);
 
         $output->writeln("✅ Import terminé. Total jeux importés : $importedCount");
         return Command::SUCCESS;
